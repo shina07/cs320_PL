@@ -8,17 +8,17 @@ Implement ***PWAE*** (Postfixed ***WAE***). Begin with [the "WAE" implementation
 - Fixing the Arithmetic Operators
 	Next, we need to fix the arithmetic operators. This is a bit tricky, since each of them receives two inputs that are both lists of numbers, and they should apply the operator on each pair from these two inputs, and collect a list of all of the results. So to make it easy, here is a skeleton of a utility function that will do this work. It is near-complete, and you have a tiny hole to fill:
 
-    ;bin-op : (number number -> number) (listof number) (listof number) -> (listof number))
-    ;; applies a binary numeric function on all combinations of numbers from
-    ;; the two input lists, and return the list of all of the results
-    (define (bin-op op ls rs)
-      (define (helper l rs)
-        ;; f : number -> number
-        ...
-        (map f rs))
-      (if (null? ls)
-        null
-        (append (helper (first ls) rs) (bin-op op (rest ls) rs))))
+        ;bin-op : (number number -> number) (listof number) (listof number) -> (listof number))
+        ;; applies a binary numeric function on all combinations of numbers from
+        ;; the two input lists, and return the list of all of the results
+        (define (bin-op op ls rs)
+          (define (helper l rs)
+            ;; f : number -> number
+            ...
+            (map f rs))
+          (if (null? ls)
+            null
+            (append (helper (first ls) rs) (bin-op op (rest ls) rs))))
 
 	Here are some tests that should work once you’re done with this part:
 
