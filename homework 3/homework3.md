@@ -47,11 +47,11 @@ Implement ***PWAE*** (Postfixed ***WAE***). Begin with [the "WAE" implementation
 	are all valid syntaxes, and they will evaluate to the same result as above.
 	You may want to use library functions for lists such as ***map***, ***foldl***, and ***drop-right***. Here are some tests:
     
-    (test (run "{+ {+ {pooh 1 2 -} 5} {pooh 3 4 -}}") '(3))
-    (test (run "{pooh {+ {pooh 1 2 -} 5} {- 3 4} +}") '(3))
-    (test (run "{pooh {pooh {pooh 1 2 -} 5 +} {pooh 3 4 -} +}") '(3))
-    (test (run "{+ {+ {- 1 2} 5} {- 3 4}}") '(3))
-    (test (run "{with {x {pooh 3 4 -}} {pooh {+ {pooh 1 2 -} 5} x +}}") '(3))
+        (test (run "{+ {+ {pooh 1 2 -} 5} {pooh 3 4 -}}") '(3))
+        (test (run "{pooh {+ {pooh 1 2 -} 5} {- 3 4} +}") '(3))
+        (test (run "{pooh {pooh {pooh 1 2 -} 5 +} {pooh 3 4 -} +}") '(3))
+        (test (run "{+ {+ {- 1 2} 5} {- 3 4}}") '(3))
+        (test (run "{with {x {pooh 3 4 -}} {pooh {+ {pooh 1 2 -} 5} x +}}") '(3))
 
 Here are some more tests:
 
@@ -104,4 +104,4 @@ Here are some more tests:
     (test (run "{with {x {with {x 20} {pooh 1 x +}}} {with {y 10} {pooh x y -}}}") '(11))
     (test (run "{with {x {pooh 1 2 3 4 5 +}} x}") '(15))
     (test (run "{pooh {with {x {pooh {1 2} {3 4} 1 +}} x} 2 3 -}") '(0 1 1 2))
-(test (run "{pooh {1 2 3} {4 5} -}") '(-3 -4 -2 -3 -1 -2))
+    (test (run "{pooh {1 2 3} {4 5} -}") '(-3 -4 -2 -3 -1 -2))
