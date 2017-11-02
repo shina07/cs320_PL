@@ -2,7 +2,7 @@
 
 
 
-- #####Functions with Multiple Arguments
+- ##### Functions with Multiple Arguments
 
 	Start with the FWAE interpreter, and extend the implementation to support any number of arguments to a function (including zero), and any number of arguments (including zero) in a function application:
     
@@ -18,7 +18,7 @@
 	For parsing, assume that any symbol other than '+, '-, 'with, or 'fun can be an identifier. At run-time, a new error is now possible: function application with the wrong number of arguments. Your interp function should detect the mismatch and report an error that includes the words “wrong arity”. A function would be ill-defined if two of its argument <id>s were the same. To prevent this problem, your parse function should detect this problem and reports a “bad syntax” error. For example, (parse '{fun {f x x} x}) should report a “bad syntax” error, while (parse '{fun {f x y} x}) should produce a fun value. Remember that the PLAI language provides the useful function map: map takes a function and a list, and applies the function to each element in the list, returning a list of results. For example, if sexps is a list of S-expressions to parse, (map parse sexps) produces a list of FWAEs by parsing each S-expression.
 	You can decide whether to use deferred substitution.
 
-- #####Adding Records
+- ##### Adding Records
 
 	Extend your interpreter to support the construction of records with named fields, and to support field selection from a record:
 
