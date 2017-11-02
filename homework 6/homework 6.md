@@ -3,6 +3,7 @@
 
 
 - Functions with Multiple Arguments
+
 	Start with the FWAE interpreter, and extend the implementation to support any number of arguments to a function (including zero), and any number of arguments (including zero) in a function application:
     
         <FWAE>  ::= <number>
@@ -18,6 +19,7 @@
 	You can decide whether to use deferred substitution.
 
 - Adding Records
+
 	Extend your interpreter to support the construction of records with named fields, and to support field selection from a record:
 
          <FWAE> ::= ...
