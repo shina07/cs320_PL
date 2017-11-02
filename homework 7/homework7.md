@@ -2,7 +2,7 @@
 
 
 
-- #####Improving Assignments
+- ##### Improving Assignments
 
 	Start with the BFAE interpreter. In the starting program, the representation of the store grows every time that a box's content is modified with setbox. Change the implementation of setbox so that the old value of the box is dropped (i.e., replaced with the new value) instead of merely hidden by the outside-in search order of store-lookup.
     
@@ -21,7 +21,7 @@
 
 
 
-- #####Improving Sequences
+- ##### Improving Sequences
 
 	Generalize seqn to allow one or more sub-expressions, instead of exactly two sub-expressions:
 
@@ -42,7 +42,7 @@
                 (v*s (numV 10)
                      (aSto 1 (numV 10) (mtSto))))
 
-- #####Records
+- ##### Records
  
 	Add rec and get forms for records as in Homework #6, and also add set form that modifies the value of a record field:
 
