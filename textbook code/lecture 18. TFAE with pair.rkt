@@ -1,24 +1,29 @@
 #lang plai-typed
 
 (define-type TFAE
-  [num (n : number)]
-  [add (lhs : TFAE) (rhs : TFAE)]
-  [sub (lhs : TFAE) (rhs : TFAE)]
-  [id  (name : symbol)]
-  [fun (param : symbol) (type : TE) (body : TFAE)]
-  [app (fun-expr : TFAE) (arg-expr : TFAE)]
+  [num  (n : number)]
+  [add  (lhs : TFAE) (rhs : TFAE)]
+  [sub  (lhs : TFAE) (rhs : TFAE)]
+  [id   (name : symbol)]
+  [fun  (param : symbol) (type : TE) (body : TFAE)]
+  [app  (fun-expr : TFAE) (arg-expr : TFAE)]
+  [pair (first : TFAE) (second : TFAE)]
+  [fst  (pair : TFAE)]
+  [snd  (pair : TFAE)]
 )
 
 (define-type TE
   [numTE]
   [boolTE]
   [arrowTE (arg : TE) (result : TE)]
+  [crossTE (firstTE : TE) (secondTE : TE)]
 )
 
 (define-type Type
   [numT]
   [boolT]
   [arrowT (arg : Type) (result : Type)]
+  [crossT (f : Type) (s : Type)]
 )
 
 (define-type TypeEnv
@@ -37,6 +42,7 @@
             (body : TFAE)
             (ds : DefrdSub)]
   [boolV    (b : boolean)]
+  [pairV    (f : TFAE-Value) (s : TFAE-Value)]
 )
 ;; -----------------------------------------------------------
 ;;                       Type Checking
@@ -79,6 +85,18 @@
                          (type-error arg
                                      (to-string param-type)))]
              [else (type-error fn "function")])]
+      [pair (fst snd)
+            (crossT (typecheck fst env) (typecheck snd env))]
+      [fst  (pair-expr)
+            (type-case Type (typecheck pair-expr env)
+              [crossT (f s) f]
+              [else   (type-error pair-expr "not a pair")]
+            )]
+      [snd  (pair-expr)
+            (type-case Type (typecheck pair-expr env)
+              [crossT (f s) s]
+              [else   (type-error pair-expr "not a pair")]
+            )]
     )
   )
 )
@@ -98,6 +116,8 @@
     [numTE   ()    (numT)]
     [boolTE  ()    (boolT)]
     [arrowTE (a b) (arrowT (parse-type a)
+                           (parse-type b))]
+    [crossTE (a b) (crossT (parse-type a)
                            (parse-type b))]
   )
 )
@@ -131,6 +151,17 @@
                    (aSub (closureV-param fun-val)
                          arg-val
                          (closureV-ds fun-val)))
+         )]
+    [pair (f s)  (pairV (interp f ds)(interp s ds))]
+    [fst (pair-expr)
+         (type-case TFAE-Value (interp pair-expr ds)
+           [pairV (f s) f]
+           [else  (error 'interp "not a pair")]
+         )]
+    [snd (pair-expr)
+         (type-case TFAE-Value (interp pair-expr ds)
+           [pairV (f s) s]
+           [else  (error 'interp "not a pair")]
          )]
   )
 )
@@ -166,15 +197,18 @@
 
 
 
-;(test (interp (fst (pair (num 10) (num 8))) (mtSub)) (numV 10))
-;(test (interp (snd (pair (num 10) (num 8))) (mtSub)) (numV 8))
-;(test (typecheck (add (num 1) (snd (pair (num 10) (num 8)))) (mtEnv)) (numT))
+
+(test (interp (fst (pair (num 10) (num 8))) (mtSub)) (numV 10))
+(test (interp (snd (pair (num 10) (num 8))) (mtSub)) (numV 8))
+(test (typecheck (pair (num 10) (num 8)) (mtEnv)) (crossT (numT) (numT)))
+(test (typecheck (add (num 1) (snd (pair (num 10) (num 8)))) (mtEnv)) (numT))
 
 (test (interp (id 'x)
               (aSub 'x (numV 10) (mtSub)))
       (numV 10))
 (test (typecheck (fun 'x (numTE) (add (id 'x) (num 12))) (mtEnv))
       (arrowT (numT) (numT)))
+(test/exn (typecheck (fst (num 10)) (mtEnv)) "no type")
 (test (interp (num 10)
               (mtSub))
       (numV 10))
